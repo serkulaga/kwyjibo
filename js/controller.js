@@ -400,14 +400,28 @@ function addChildsToTreeNode(node) {
         }
     }
 }
+
 function buildControllersTree() {
-    for (let ck in exports.globalKCState.controllers) {
-        let c = exports.globalKCState.controllers[ck];
-        if (c.childController === false) {
-            let node = new KwyjiboControllerTreeNode(c);
+    
+    function buildControllerNode(controller){
+        if (controller.childController === false) {
+            let node = new KwyjiboControllerTreeNode(controller);
             addChildsToTreeNode(node);
             exports.globalKCState.controllersTree.push(node);
+        }  
+    }
+    let rootController;
+    for (let ck in exports.globalKCState.controllers) {
+        let c = exports.globalKCState.controllers[ck];
+        if (c.path === '/') {
+            rootController = c;
+        } else {
+            buildControllerNode(c)
         }
+    }
+
+    if (rootController) {
+        buildControllerNode(rootController);
     }
 }
 function indexAutogenerator(controller, childs) {
@@ -526,6 +540,8 @@ function mountMethod(controller, instance, methodKey) {
             runner().then(() => { context.dispose(); })
                 .catch((err) => { context.dispose(); next(err); });
         };
+
+        console.log(controller.path, mp.path);
         controller.router[mp.httpMethod](U.UrlJoin(mp.path, "/"), ...method.middleware, callback);
     }
 }
