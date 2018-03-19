@@ -1,3 +1,4 @@
+"use strict";
 /*********************************************************************************
 
 MIT License
@@ -23,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 *********************************************************************************/
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function UrlJoin(...parts) {
     let ret = parts.join("/");
     // remove consecutive slashes
@@ -57,4 +58,15 @@ function setDefaultInfoLogger(logger) {
     exports.defaultInfoLogger = logger;
 }
 exports.setDefaultInfoLogger = setDefaultInfoLogger;
+
+function defaultRequestNotFoundHandler(req, res, next){
+    res.sendStatus(404);   
+}
+exports.defaultRequestNotFoundHandler = defaultRequestNotFoundHandler;
+
+function setRequestNotFoundHandler(handler) {
+    exports.defaultRequestNotFoundHandler = handler;
+}
+exports.setRequestNotFoundHandler = setRequestNotFoundHandler;
+
 //# sourceMappingURL=utils.js.map

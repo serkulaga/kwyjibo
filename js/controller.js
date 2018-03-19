@@ -1,3 +1,4 @@
+"use strict";
 /*********************************************************************************
 
 MIT License
@@ -23,15 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 *********************************************************************************/
-"use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -40,6 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const Express = require("express");
 const U = require("./utils");
 const D = require("./documentation");
@@ -623,9 +616,7 @@ function onRequestError(err, req, res, next) {
         }
     }
 }
-function onRequestNotFound(req, res, next) {
-    res.sendStatus(404);
-}
+
 exports.initialized = false;
 function initialize(app, ...requiredDirectories) {
     initializeAtRoute("/", app, ...requiredDirectories);
@@ -676,7 +667,7 @@ function initializeAtRoute(rootPath, app, ...requiredDirectories) {
         app.get(rootPath, indexAutogenerator(undefined, exports.globalKCState.controllersTree));
     }
     app.use(handleRequestErrorMiddlewares);
-    app.use(onRequestNotFound);
+    app.use(U.defaultRequestNotFoundHandler);
     exports.initialized = true;
 }
 exports.initializeAtRoute = initializeAtRoute;
@@ -717,7 +708,7 @@ function controllerDocToRoutes(controllers, baseUrl, replacements) {
             }
         }
         let childRoutes = controllerDocToRoutes(controller.childs, controller.path);
-        routes = __assign({}, routes, childRoutes);
+        routes = Object.assign({}, routes, childRoutes);
     }
     return routes;
 }

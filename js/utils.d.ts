@@ -41,3 +41,6 @@ export declare function setDefaultInfoLogger(logger: (toLog: any) => void): void
 export interface Dictionary<T> {
     [key: string]: T;
 }
+
+export declare let defaultRequestNotFoundHandler: (req: Express.Request, res: Express.Response, next: Function) => void;
+export declare function setRequestNotFoundHandler(handler: (req: Express.Request, res: Express.Response, next: Function) => void): void;
