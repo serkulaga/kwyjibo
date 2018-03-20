@@ -541,7 +541,6 @@ function mountMethod(controller, instance, methodKey) {
                 .catch((err) => { context.dispose(); next(err); });
         };
 
-        console.log(controller.path, mp.path);
         controller.router[mp.httpMethod](U.UrlJoin(mp.path, "/"), ...method.middleware, callback);
     }
 }
